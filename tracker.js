@@ -149,8 +149,30 @@ function viewDepartment() {
     })
 }
 
-
 //ADD FUNCTIONS
+function addQuestions() {
+    inquirer
+        .prompt([
+            {
+                name: "add",
+                type: "list",
+                message: "What would you like to add?",
+                choices: ["Add an employee", "Add a role", "Add a department", "Go back"]
+            }
+        ]).then((answer) => {
+            if (answer.add === "Add an employee") {
+                addEmployee();
+            } else if (answer.add === "Add a role") {
+                addRole();
+            } else if (answer.add === "Add a department") {
+                addDepartment();
+            } else {
+                start();
+            }
+        })
+
+}
+//ADD DEPARTMENT
 function addDepartment() {
     inquirer
         .prompt([
