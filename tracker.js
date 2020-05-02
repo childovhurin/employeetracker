@@ -155,16 +155,16 @@ function addDepartment() {
     inquirer
         .prompt([
             {
-            name: "department",
-            type: "input",
-            message: "What department would you like to add?"
+                name: "department",
+                type: "input",
+                message: "What department would you like to add?"
             }
         ])
         .then(function (answer) {
             connection.query(
                 "INSERT INTO department SET ?",
                 {
-                name: answer.department
+                    name: answer.department
                 },
                 function (err) {
                     if (err) throw err;
@@ -174,34 +174,34 @@ function addDepartment() {
                 }
             );
         })
-    }
+}
 //ADD ROLE
 function addRole() {
     inquirer
         .prompt([
             {
-            name: "title",
-            type: "input",
-            message: "What is the title of this role?"
+                name: "title",
+                type: "input",
+                message: "What is the title of this role?"
             },
             {
-            name: "salary",
-            type: "input",
-            message: "What is the salary of this position?"
+                name: "salary",
+                type: "input",
+                message: "What is the salary of this position?"
 
             },
             {
-            name: "department",
-            type: "input",
-            message: "What department does this role belong?"
+                name: "department",
+                type: "input",
+                message: "What department does this role belong?"
             }
         ]).then(function (answer) {
             connection.query(
                 "INSERT INTO role SET ?",
                 {
-                title: answer.title,
-                salary: answer.salary,
-                department_id: answer.department
+                    title: answer.title,
+                    salary: answer.salary,
+                    department_id: answer.department
                 },
                 function (err) {
                     if (err) throw err;
@@ -213,6 +213,63 @@ function addRole() {
         })
 }
 //ADD EMPLOYEE
+function addEmployee() {
+    inquirer
+        .prompt([
+            {
+                name: "name",
+                type: "input",
+                message: "What is this employee's name?"
+
+            },
+            {
+                name: "role",
+                type: "input",
+                message: "What is this employee's role ID?"
+            },
+            {
+                name: "manager",
+                type: "input",
+                message: "What is the ID of this employee's manager?"
+            },
+        ])
+        .then(function (answer) {
+            const employeeFirstAndLastNames = answer.name.split(" ")
+            if (answer.manager.trim() === "") {
+                connection.query(
+                    "INSERT INTO employee SET ?",
+                    {
+                        first_name: employeeFirstAndLastNames[0],
+                        last_name: employeeFirstAndLastNames[1],
+                        role_id: answer.role,
+                    },
+                    function (err) {
+                        if (err) throw err;
+                        console.log("SUCCESS!");
+
+                        start();
+                    }
+                );
+            } else {
+                connection.query(
+                    "INSERT INTO employee SET ?",
+                    {
+                        first_name: employeeFirstAndLastNames[0],
+                        last_name: employeeFirstAndLastNames[1],
+                        role_id: answer.role,
+                        manager_id: answer.manager
+                    },
+                    function (err) {
+                        if (err) throw err;
+                        console.log("SUCCESS!");
+
+                        start();
+                    }
+                );
+            }
+        })
+
+}
 
 
 //DELETE
