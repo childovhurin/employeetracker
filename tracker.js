@@ -65,7 +65,7 @@ function viewQuestions() {
             }
         })
 }
-
+//VIEW ALL INFO
 function viewAllInformation() {
     connection.query("SELECT department.id AS department_id, department.name AS department_name, e.id AS employee_id, role.id AS role_id, e.first_name, e.last_name, role.title AS title, m.id AS manager_id, m.first_name AS manager_first, m.last_name AS manager_last FROM employee e LEFT JOIN role ON e.role_id = role.id LEFT JOIN employee m ON e.manager_id  = m.id LEFT JOIN department ON department.id=role.department_id ORDER BY e.id ASC", function (err, res) {
         if (err) throw err;
@@ -85,6 +85,66 @@ function viewAllInformation() {
             );
         }
         console.table(referenceTable);
+        start();
+    })
+}
+//VIEW EMPLOYEES
+function viewEmployees() {
+    connection.query("SELECT e.id AS employee_id, role.id AS role_id, e.first_name, e.last_name, role.title AS title, m.id AS manager_id, m.first_name AS manager_first, m.last_name AS manager_last FROM employee e LEFT JOIN role ON e.role_id = role.id LEFT JOIN employee m on e.manager_id  = m.id ORDER BY e.id ASC", function (err, res) {
+        if (err) throw err;
+        const employeesArray = [];
+        for (let i = 0; i < res.length; i++) {
+            employeesArray.push(
+                {
+                "Employee ID": res[i].employee_id,
+                Name: res[i].first_name + " " + res[i].last_name,
+                "Role ID": res[i].role_id,
+                Role: res[i].title,
+                "Manager ID": res[i].manager_id,
+                "Manager Name": res[i].manager_first + " " + res[i].manager_last
+                }
+            );
+        }
+        console.table(employeesArray);
+
+        start();
+    })
+}
+//VIEW ROLES
+function viewRoles() {
+    connection.query("SELECT role.id AS role_id, salary, department.name AS department_name, title, department.id AS department_id FROM role LEFT JOIN department ON role.department_id = department.id ORDER BY role_id ASC", function (err, res) {
+        if (err) throw err;
+        const rolesArray = [];
+        for (let i = 0; i < res.length; i++) {
+            rolesArray.push(
+                {
+                "Role ID": res[i].role_id,
+                Role: res[i].title,
+                Salary: res[i].salary,
+                "Department ID": res[i].department_id,
+                Department: res[i].department_name
+                }
+            );
+        }
+        console.table(rolesArray);
+        start();
+    })
+}
+//VIEW DEPARTMENT
+function viewDepartment() {
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw err;
+        const deptArray = [];
+        for (let i = 0; i < res.length; i++) {
+            deptArray.push(
+                {
+                "Department ID": res[i].id,
+                Department: res[i].name
+                }
+            );
+        }
+        console.table(deptArray);
+
         start();
     })
 }
