@@ -73,14 +73,14 @@ function viewAllInformation() {
         for (let i = 0; i < res.length; i++) {
             referenceTable.push(
                 {
-                "Employee ID": res[i].employee_id,
-                Name: res[i].first_name + " " + res[i].last_name,
-                "Role ID": res[i].role_id,
-                Role: res[i].title,
-                "Department ID": res[i].department_id,
-                Department: res[i].department_name,
-                "Manager ID": res[i].manager_id,
-                "Manager Name": res[i].manager_first + " " + res[i].manager_last
+                    "Employee ID": res[i].employee_id,
+                    Name: res[i].first_name + " " + res[i].last_name,
+                    "Role ID": res[i].role_id,
+                    Role: res[i].title,
+                    "Department ID": res[i].department_id,
+                    Department: res[i].department_name,
+                    "Manager ID": res[i].manager_id,
+                    "Manager Name": res[i].manager_first + " " + res[i].manager_last
                 }
             );
         }
@@ -96,12 +96,12 @@ function viewEmployees() {
         for (let i = 0; i < res.length; i++) {
             employeesArray.push(
                 {
-                "Employee ID": res[i].employee_id,
-                Name: res[i].first_name + " " + res[i].last_name,
-                "Role ID": res[i].role_id,
-                Role: res[i].title,
-                "Manager ID": res[i].manager_id,
-                "Manager Name": res[i].manager_first + " " + res[i].manager_last
+                    "Employee ID": res[i].employee_id,
+                    Name: res[i].first_name + " " + res[i].last_name,
+                    "Role ID": res[i].role_id,
+                    Role: res[i].title,
+                    "Manager ID": res[i].manager_id,
+                    "Manager Name": res[i].manager_first + " " + res[i].manager_last
                 }
             );
         }
@@ -118,11 +118,11 @@ function viewRoles() {
         for (let i = 0; i < res.length; i++) {
             rolesArray.push(
                 {
-                "Role ID": res[i].role_id,
-                Role: res[i].title,
-                Salary: res[i].salary,
-                "Department ID": res[i].department_id,
-                Department: res[i].department_name
+                    "Role ID": res[i].role_id,
+                    Role: res[i].title,
+                    Salary: res[i].salary,
+                    "Department ID": res[i].department_id,
+                    Department: res[i].department_name
                 }
             );
         }
@@ -138,8 +138,8 @@ function viewDepartment() {
         for (let i = 0; i < res.length; i++) {
             deptArray.push(
                 {
-                "Department ID": res[i].id,
-                Department: res[i].name
+                    "Department ID": res[i].id,
+                    Department: res[i].name
                 }
             );
         }
@@ -150,6 +150,69 @@ function viewDepartment() {
 }
 
 
-//ADD
+//ADD FUNCTIONS
+function addDepartment() {
+    inquirer
+        .prompt([
+            {
+            name: "department",
+            type: "input",
+            message: "What department would you like to add?"
+            }
+        ])
+        .then(function (answer) {
+            connection.query(
+                "INSERT INTO department SET ?",
+                {
+                name: answer.department
+                },
+                function (err) {
+                    if (err) throw err;
+                    console.log("SUCCESS!");
+
+                    start();
+                }
+            );
+        })
+    }
+//ADD ROLE
+function addRole() {
+    inquirer
+        .prompt([
+            {
+            name: "title",
+            type: "input",
+            message: "What is the title of this role?"
+            },
+            {
+            name: "salary",
+            type: "input",
+            message: "What is the salary of this position?"
+
+            },
+            {
+            name: "department",
+            type: "input",
+            message: "What department does this role belong?"
+            }
+        ]).then(function (answer) {
+            connection.query(
+                "INSERT INTO role SET ?",
+                {
+                title: answer.title,
+                salary: answer.salary,
+                department_id: answer.department
+                },
+                function (err) {
+                    if (err) throw err;
+                    console.log("SUCCESS!");
+
+                    start();
+                }
+            );
+        })
+}
+//ADD EMPLOYEE
+
 
 //DELETE
